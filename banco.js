@@ -65,11 +65,25 @@ class Banco{
     return result
     }
 
+    async contarLinhas() {
+    const banco = await this.sqlConnection();
+    const result = await banco.all("SELECT COUNT(*) FROM resultados;");
+    return result
+    }
     
+
+    async contarGols() {
+    const banco = await this.sqlConnection();
+    const result = await banco.all("SELECT SUM(gols) FROM resultados;");
+    return result
+    }
+        
+    async contarAssitencia() {
+    const banco = await this.sqlConnection();
+    const result = await banco.all("SELECT SUM(assitencia) FROM resultados;");
+    return result
+    }
 }
 
 
 module.exports = Banco;
-
-//SELECT SUM(assitencia) FROM resultados;
-//SELECT COUNT(*) FROM resultados;

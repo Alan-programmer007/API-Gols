@@ -14,9 +14,11 @@ app.get("/resultados", async(request, response) =>{
     //const pos = alunos.findIndex(aluno => aluno.uuid == uuid)
     //if(uuid)
     //return response.json(alunos[pos])
-
-    const lista = await banco.listar()
-    return response.json(lista)
+    const count = await banco.contarLinhas();
+    const gols = await banco.contarGols();
+    const assitencia = await banco.contarAssitencia();
+    const lista = await banco.listar();
+    return response.json({ count, gols, assitencia, lista });
 })
 
 app.post("/resultados", (request, response) =>{
@@ -42,7 +44,7 @@ app.delete("/resultados/:id", async(request, response) =>{
     const pos = await banco.buscar(id)
     console.log(pos)
     if(pos <= 0)
-        return response.status(400).json({mensage: "Aluno não encontrado"})
+        return response.status(400).json({mensage: "Resultados não encontrado"})
 
     banco.remover(id)
     return response.json({mensage: "Removido"})
@@ -55,7 +57,7 @@ app.put("/resultados/:id", async(request, response) =>{
     const pos = await banco.buscar(id)
     console.log(pos)
     if(pos <= 0)
-        return response.status(400).json({mensage: "Aluno não encontrado"})
+        return response.status(400).json({mensage: "Resultados não encontrado"})
 
     const informacoes = {
         id,
@@ -65,5 +67,5 @@ app.put("/resultados/:id", async(request, response) =>{
     }
 
     banco.atualizar(informacoes)
-    return response.json({mensage: "Aluno atualizado"})
+    return response.json({mensage: "Resultados atualizado"})
 })
