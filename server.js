@@ -14,11 +14,13 @@ app.get("/resultados", async(request, response) =>{
     //const pos = alunos.findIndex(aluno => aluno.uuid == uuid)
     //if(uuid)
     //return response.json(alunos[pos])
-    const count = await banco.contarLinhas();
-    const gols = await banco.contarGols();
-    const assitencia = await banco.contarAssitencia();
     const lista = await banco.listar();
-    return response.json({ count, gols, assitencia, lista });
+    return response.json(lista);
+})
+
+app.get("/resultados/buscaId", async(resquest, reponse) => {
+    const indentificador = await banco.buscar(resquest.body.id);
+    return reponse.json(indentificador);
 })
 
 app.post("/resultados", (request, response) =>{
@@ -34,7 +36,7 @@ app.post("/resultados", (request, response) =>{
     return response.json(informacoes)
 })
 
-app.listen(5555, () =>{
+app.listen(5151, () =>{
     console.log("Servidor on")
 })
 
