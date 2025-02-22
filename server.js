@@ -1,4 +1,3 @@
-const { randomUUID } = require("crypto")
 const express = require("express")
 const cors = require("cors")
 const Banco = require("./banco")          
@@ -24,10 +23,8 @@ app.get("/resultados/buscaId", async(resquest, reponse) => {
 })
 
 app.post("/resultados", (request, response) =>{
-    const {data,gols,assitencia} = request.body
-    const uuid = randomUUID()
+    const {data, gols, assitencia} = request.body
     const informacoes = {
-        uuid,
         data,
         gols,
         assitencia,
@@ -54,20 +51,20 @@ app.delete("/resultados/:id", async(request, response) =>{
 
 app.put("/resultados/:id", async(request, response) =>{
     const {id} = request.params
-    const {data,gols,assitencia} = request.body
+    const {data, gols, assitencia} = request.body
 
     const pos = await banco.buscar(id)
     console.log(pos)
     if(pos <= 0)
         return response.status(400).json({mensage: "Resultados não encontrado"})
 
-    const informacoes = {
+    const container = {
         id,
         data,
         gols,
         assitencia,
     }
 
-    banco.atualizar(informacoes)
+    banco.atualizar(container)
     return response.json({mensage: "Resultados atualizado"})
 })

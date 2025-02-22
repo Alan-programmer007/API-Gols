@@ -1,13 +1,11 @@
 const sqlite = require('sqlite')
 const sqlite3 = require('sqlite3')
 
-
 class Banco{
 
     constructor(){
         this.criarTabela()
     }
-    
 
     async sqlConnection() {
     const banco = await sqlite.open({
@@ -33,10 +31,10 @@ class Banco{
     await banco.exec(tabela) 
     }
 
-    async inserir(informacoes) {
-    const {uuid, data, gols, assitencia} = informacoes;
+    async inserir(container) {
+    const {data, gols, assitencia} = container;
     const banco = await this.sqlConnection();
-    await banco.run("INSERT INTO resultados (uuid, data, gols, assitencia) values (?, ?, ?, ?)", uuid, data, gols, assitencia)
+    await banco.run("INSERT INTO resultados (data, gols, assitencia) values (?, ?, ?)", data, gols, assitencia)
     }
 
     async remover(id) {
@@ -44,8 +42,8 @@ class Banco{
     await banco.run("DELETE FROM resultados WHERE id = ?", id)
     }
 
-    async atualizar(informacoes) {
-    const {data, gols, assitencia, id} = informacoes;
+    async atualizar(container) {
+    const {data, gols, assitencia, id} = container;
     const banco = await this.sqlConnection();
     await banco.run("UPDATE resultados SET data = ?, gols = ?, assitencia = ? WHERE id = ?", data, gols, assitencia, id)
     }
@@ -53,7 +51,6 @@ class Banco{
     async listar() {
     const banco = await this.sqlConnection();
     const result = await banco.all("SELECT * FROM resultados")
-    console.log(result)
 
     return result
     }
