@@ -68,3 +68,18 @@ app.put("/resultados/:id", async(request, response) =>{
     banco.atualizar(container)
     return response.json({mensage: "Resultados atualizado"})
 })
+
+app.get("/resultados/:total", async (request, response) => {
+    const { total } = request.params
+
+    if (total == "jogos") {
+        const jogos = await banco.contarLinhas();
+        return response.json({ count: jogos });
+    } else if (total == "gols") {
+        const gol = await banco.contarGols();
+        return response.json({ count: gol[0]['SUM(gols)'] });
+    } else if (total == "assistencia") {
+        const assistencia = await banco.contarAssitencia();
+        return response.json({ count: assistencia[0]['SUM(assitencia)'] }); 
+    }
+});

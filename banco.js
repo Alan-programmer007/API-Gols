@@ -64,8 +64,8 @@ class Banco{
 
     async contarLinhas() {
     const banco = await this.sqlConnection();
-    const result = await banco.all("SELECT COUNT(*) FROM resultados;");
-    return result
+    const result = await banco.get("SELECT COUNT(*) as count FROM resultados;");
+    return result.count
     }
     
 
